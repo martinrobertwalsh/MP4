@@ -1,0 +1,428 @@
+```
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Forgotten Composers | British Orchestral Music 1850–1950</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --navy: #1a2b42;
+            --gold: #d4b86a;
+            --gold-bright: #e6c976;
+            --stone: #e2ded4; /* Soft stone background color */
+            --cream: #f8f5eb;
+            --text: #2b2b2b;
+            --accent: #506680;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Cormorant Garamond', Georgia, 'Times New Roman', Times, serif;
+            line-height: 1.75;
+            color: var(--text);
+            background-color: var(--stone); /* Stone background */
+            font-size: 18px;
+            letter-spacing: 0.01em;
+            font-weight: 500;
+        }
+
+        header {
+            background: url('banner.jpg') center/cover no-repeat;
+            min-height: 320px;
+            display: flex;
+            align-items: flex-end;
+            justify-content: center;
+            text-align: center;
+            color: white;
+            padding: 1.5rem 5%;
+        }
+
+        .header-inner {
+            max-width: 1200px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        nav { margin-bottom: 1rem; }
+
+        nav a {
+            font-family: 'Cormorant Garamond', serif;
+            color: white;
+            text-decoration: none;
+            margin: 0 0.75rem;
+            padding: 0.5rem 1rem;
+            font-weight: 500;
+            transition: color 0.2s;
+            display: inline-block;
+        }
+
+        nav a:hover { color: var(--gold-bright); }
+
+        .popup-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem;
+        }
+
+        .popup-overlay.active {
+            display: flex;
+        }
+
+        .popup-content {
+            background: #fff;
+            padding: 3rem;
+            max-width: 650px;
+            width: 100%;
+            border-radius: 8px;
+            position: relative;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+        }
+
+        .popup-content h2 {
+            color: var(--navy);
+            margin-bottom: 1.5rem;
+            border: none;
+            padding: 0;
+        }
+
+        .popup-content p {
+            margin-bottom: 1.25rem;
+            font-size: 1.1rem;
+            line-height: 1.8;
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 1rem;
+            right: 1.5rem;
+            font-size: 1.8rem;
+            color: #999;
+            cursor: pointer;
+            transition: color 0.2s;
+            line-height: 1;
+        }
+
+        .close-btn:hover {
+            color: var(--navy);
+        }
+
+        .close-popup-btn {
+            font-family: 'Cormorant Garamond', serif;
+            background: var(--navy);
+            color: var(--gold-bright);
+            border: none;
+            padding: 0.75rem 2rem;
+            font-size: 1.1rem;
+            cursor: pointer;
+            border-radius: 4px;
+            transition: background 0.3s;
+            margin-top: 0.5rem;
+        }
+
+        .close-popup-btn:hover {
+            background: #2a3b52;
+        }
+
+        main {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem 5%;
+        }
+
+        section { margin-bottom: 3rem; }
+
+        h2 {
+            font-family: 'Cormorant Garamond', serif;
+            color: var(--navy);
+            margin: 2rem 0 1rem;
+            border-left: 4px solid var(--gold);
+            padding-left: 1rem;
+            font-weight: 700;
+            letter-spacing: 0.015em;
+        }
+
+        .hero {
+            background: var(--cream);
+            padding: 2.5rem;
+            border-radius: 8px;
+            margin-bottom: 2rem;
+        }
+
+        .featured-card {
+            border: 1px solid #d0cbc0;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            background: #fff;
+        }
+
+        .featured-header {
+            background: var(--navy);
+            color: white;
+            padding: 1.25rem;
+        }
+
+        .featured-header h2 {
+            color: var(--gold-bright);
+            border: none;
+            padding-left: 0;
+            margin: 0;
+        }
+
+        .featured-body { padding: 1.5rem; }
+
+        .featured-body h3 {
+            font-family: 'Cormorant Garamond', serif;
+            color: var(--navy);
+            font-size: 1.5rem;
+            margin-bottom: 0.3rem;
+            font-weight: 700;
+        }
+
+        .dates {
+            color: var(--gold-bright);
+            font-style: italic;
+            margin-bottom: 1rem;
+            font-size: 1.05rem;
+        }
+
+        .pitt-photo {
+            margin: 0.5rem 0 1.5rem 0;
+            text-align: left;
+        }
+
+        .pitt-photo img {
+            max-width: 200px;
+            width: 100%;
+            height: auto;
+            border-radius: 6px;
+            border: 3px solid var(--gold);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+            display: block;
+        }
+
+        blockquote {
+            border-left: 3px solid var(--gold);
+            padding-left: 1.2rem;
+            margin: 1.2rem 0;
+            font-style: italic;
+            color: #444;
+            font-size: 1.1rem;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1.5rem 0;
+        }
+
+        th, td {
+            padding: 0.75rem 1rem;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+            font-family: 'Cormorant Garamond', serif;
+        }
+
+        th {
+            background: var(--cream);
+            color: var(--navy);
+            font-weight: 700;
+        }
+
+        .red-link { color: #b30000; font-weight: bold; }
+
+        .composer-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .composer-item {
+            padding: 1rem;
+            border: 1px solid #d0cbc0;
+            border-radius: 6px;
+            background: #fff;
+            transition: 0.2s;
+        }
+
+        .composer-item:hover {
+            background: var(--cream);
+            border-color: var(--gold);
+        }
+
+        .composer-item h4 {
+            font-family: 'Cormorant Garamond', serif;
+            color: var(--navy);
+            margin-bottom: 0.25rem;
+            font-weight: 600;
+        }
+
+        footer {
+            background: var(--navy);
+            color: white;
+            text-align: center;
+            padding: 2rem;
+            margin-top: 2rem;
+            font-size: 0.95rem;
+        }
+
+        footer p:first-child {
+            color: var(--gold-bright);
+        }
+
+        @media(max-width: 768px) {
+            nav a { display: inline-block; margin: 0.25rem; }
+            table { font-size: 0.9rem; }
+            th, td { padding: 0.5rem; }
+            body { font-size: 17px; }
+            header { min-height: 260px; }
+            .popup-content { padding: 2rem 1.5rem; }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="header-inner">
+            <nav>
+                <a href="#home">Home</a>
+                <a href="#composers">A–Z List</a>
+                <a href="#featured">Featured</a>
+                <a href="#about">About</a>
+                <a href="#" id="welcomeTextLink">Welcome</a>
+            </nav>
+        </div>
+    </header>
+
+    <div class="popup-overlay" id="welcomePopup">
+        <div class="popup-content">
+            <span class="close-btn" id="closeBtn">&times;</span>
+            <h2>Welcome</h2>
+            <p>This site explores British orchestral music written between 1850 and 1950. My focus is on composers whose work has sadly fallen into oblivion. By searching for orchestral scores from various sources I have hopefully created decent renditions of their music using Sibelius and Noteperformer software.</p>
+            <p>We can at last hear their music brought back to life; music which has for too long been forgotten, and in some cases never performed.</p>
+            <button class="close-popup-btn" id="closePopupBtn">Explore the Music</button>
+        </div>
+    </div>
+
+    <script>
+        const welcomeTextLink = document.getElementById('welcomeTextLink');
+        const welcomePopup = document.getElementById('welcomePopup');
+        const closeBtn = document.getElementById('closeBtn');
+        const closePopupBtn = document.getElementById('closePopupBtn');
+
+        welcomeTextLink.addEventListener('click', (e) => {
+            e.preventDefault();
+            welcomePopup.classList.add('active');
+        });
+
+        function closePopup() {
+            welcomePopup.classList.remove('active');
+        }
+
+        closeBtn.addEventListener('click', closePopup);
+        closePopupBtn.addEventListener('click', closePopup);
+        
+        welcomePopup.addEventListener('click', (e) => {
+            if (e.target === welcomePopup) closePopup();
+        });
+    </script>
+
+    <main>
+        <section id="home" class="hero">
+            <h2>Welcome</h2>
+            <p>This site explores British orchestral music written between 1850 and 1950. My focus is on composers whose work has sadly fallen into oblivion. By searching for orchestral scores from various sources I have hopefully created decent renditions of their music using Sibelius and Noteperformer software.</p>
+            <p style="margin-top:1rem;">We can at last hear their music brought back to life; music which has for too long been forgotten, and in some cases never performed.</p>
+        </section>
+
+        <section id="featured" class="featured-card">
+            <div class="featured-header">
+                <h2>Featured Article</h2>
+            </div>
+            <div class="featured-body">
+                <h3>Percy Pitt (1869–1932)</h3>
+                <p class="dates">"A life on the podium, a composer in the shadows"</p>
+
+                <!-- Photo directly under subtitle, left-aligned -->
+                <div class="pitt-photo">
+                    <img src="Percy_Pitt.jpg" alt="Percy Pitt">
+                </div>
+
+                <p>Percy Pitt helped shape British musical life from the concert platform, the opera house and the broadcasting studio. Born in London in 1869, he trained in Leipzig with Reinecke and Jadassohn and continued his studies with Rheinberger in Munich. Returning to London in 1893, he became closely associated with Queen's Hall, working as pianist, organist and accompanist.</p>
+                
+                <p style="margin-top:1rem;">His conducting career began in earnest when he was appointed in late 1902 as Music Advisor at the Royal Opera House, Covent Garden — later becoming Director of Music there in 1907. From 1923 he was Musical Director of the British Broadcasting Company, remaining through its transition to the BBC until succeeded by Adrian Boult in 1930. He died in London in 1932.</p>
+
+                <blockquote>
+                "His conducting methods were a trifle peculiar. He had a habit of burying his head in the score and waving his arms over his head like a gesticulating stag-beetle..."
+                </blockquote>
+
+                <p style="margin-top:1rem;">Behind this public career was a substantial body of composition. Much of his orchestral music was heard at the Proms and was repeated in following seasons. He was a close, life-long friend of both Henry Wood and Edward Elgar.</p>
+
+                <h4 style="margin-top:2rem; color:var(--navy);">Orchestral Works</h4>
+                <table>
+                    <tr><th>Work</th><th>Date</th></tr>
+                    <tr><td>Suite in D major: Prelude and Bourrée</td><td>1891</td></tr>
+                    <tr><td>Modern Suite (Suite de ballet), Op.20</td><td>1896</td></tr>
+                    <tr><td>Fêtes galantes, Op.24</td><td>1896</td></tr>
+                    <tr><td>Concertino in C minor for clarinet and orchestra, Op.22</td><td>1897</td></tr>
+                    <tr><td>The Taming of the Shrew – overture</td><td>1898</td></tr>
+                    <tr><td>Hercules March</td><td>1898</td></tr>
+                    <tr><td>Air de ballet for strings, Op.1 No.1</td><td>1899</td></tr>
+                    <tr><td>Ballade for violin and orchestra, Op.17</td><td>1900</td></tr>
+                    <tr><td>Dance Rhythms, Op.33</td><td>1901</td></tr>
+                    <tr><td><span class="red-link">Coronation March, Op.21</span></td><td>1879</td></tr>
+                    <tr><td>Oriental Rhapsody, Op.32a</td><td>1902</td></tr>
+                    <tr><td>Paolo and Francesca – incidental music & symphonic impressions, Op.35</td><td>1902</td></tr>
+                    <tr><td>Three Old English Dances, Op.40 (from <em>Richard II</em>)</td><td>1904</td></tr>
+                    <tr><td>Symphony (Sinfonietta) in G minor</td><td>1906</td></tr>
+                    <tr><td>English Rhapsody</td><td>1910</td></tr>
+                    <tr><td>Sakura Suites Nos.1 and 2</td><td>1915</td></tr>
+                    <tr><td>Ballet égyptien</td><td>1915</td></tr>
+                    <tr><td>La Sérénade – serenade for string orchestra</td><td>Undated</td></tr>
+                </table>
+            </div>
+        </section>
+
+        <section id="composers">
+            <h2>Composers A–Z</h2>
+            <div class="composer-list">
+                <div class="composer-item">
+                    <h4>Herbert Brewer</h4>
+                    <p>1865–1928<br><em>"Orchestral miniatures from a cathedral organist"</em></p>
+                </div>
+                <div class="composer-item">
+                    <h4>Learmont Drysdale</h4>
+                    <p>1866–1909<br><em>"Scottish legends in orchestral colour"</em></p>
+                </div>
+                <div class="composer-item">
+                    <h4>Arthur Hervey</h4>
+                    <p>1855–1922<br><em>"Writer, critic, promoter and composer"</em></p>
+                </div>
+                <div class="composer-item">
+                    <h4>R. O. Morris</h4>
+                    <p>1886–1948<br><em>"The quiet composer behind the great teacher"</em></p>
+               
+```
+
+Chat
+
+Create Videos
+
+Create Images
+
+Writing
+
+Homework
+
+Translate
